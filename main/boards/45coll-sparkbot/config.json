@@ -1,0 +1,9 @@
+{
+    "target": "esp32s3",
+    "builds": [
+        {
+            "name": "45coll-sparkbot",
+            "sdkconfig_append": []
+        }
+    ]
+}
