@@ -7,6 +7,7 @@
 #include <vector>
 #include <stdexcept>
 #include <cJSON.h>
+#include "communication/simple_comm.h"
 
 namespace iot {
 
@@ -269,6 +270,7 @@ public:
     virtual std::string GetDescriptorJson();
     virtual std::string GetStateJson();
     virtual void Invoke(const cJSON* command);
+    virtual int AddComm(SimpleComm *comm) { return -1; }
 
     const std::string& name() const { return name_; }
     const std::string& description() const { return description_; }
