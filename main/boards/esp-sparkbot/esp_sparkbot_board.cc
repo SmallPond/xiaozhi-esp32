@@ -13,6 +13,8 @@
 #include <driver/i2c_master.h>
 #include <driver/spi_common.h>
 
+#include "iot/communication/simple_comm.h"
+#include "iot/communication/uart_comm.h"
 #define TAG "esp_sparkbot"
 
 LV_FONT_DECLARE(font_puhui_20_4);
@@ -124,10 +126,16 @@ private:
 
     // 物联网初始化，添加对 AI 可见设备
     void InitializeIot() {
+        iot::SimpleComm *comm = new iot::UARTComm(ECHO_UART_PORT_NUM, 
+                            UART_ECHO_TXD, UART_ECHO_RXD, ECHO_UART_BAUD_RATE);
+
+        ESP_ERROR_CHECK(comm->Init());
         auto& thing_manager = iot::ThingManager::GetInstance();
         thing_manager.AddThing(iot::CreateThing("Speaker"));
         thing_manager.AddThing(iot::CreateThing("Backlight"));
-        thing_manager.AddThing(iot::CreateThing("Chassis"));
+        iot::Thing *chassis = iot::CreateThing("Chassis");
+        ESP_ERROR_CHECK(chassis->AddComm(comm));
+        thing_manager.AddThing(chassis);
     }
 
 public:
