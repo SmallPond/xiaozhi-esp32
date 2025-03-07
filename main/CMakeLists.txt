@@ -26,7 +26,9 @@ set(INCLUDE_DIRS "." "display" "audio_codecs" "protocols" "audio_processing")
 
 # 添加 IOT 相关文件
 file(GLOB IOT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/iot/things/*.cc)
+file(GLOB IOT_COMM_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/iot/communication/*.cc)
 list(APPEND SOURCES ${IOT_SOURCES})
+list(APPEND SOURCES ${IOT_COMM_SOURCES})
 
 # 添加板级公共文件
 file(GLOB BOARD_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/boards/common/*.cc)
