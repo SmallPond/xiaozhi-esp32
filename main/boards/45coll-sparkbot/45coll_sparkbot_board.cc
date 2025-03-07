@@ -6,7 +6,8 @@
 #include "button.h"
 #include "config.h"
 #include "iot/thing_manager.h"
-
+#include "iot/communication/simple_comm.h"
+#include "iot/communication/uart.h"
 #include <wifi_station.h>
 #include <esp_log.h>
 #include <esp_lcd_panel_vendor.h>
@@ -131,10 +132,17 @@ private:
 
     // 物联网初始化，添加对 AI 可见设备
     void InitializeIot() {
+        iot::SimpleComm *simple_comm = new iot::UARTComm(UART_COMM_PORT_NUM, 
+                            UART_COMM_TXD, UART_COMM_RXD, UART_COMM_BAUD_RATE);
+
+        ESP_ERROR_CHECK(simple_comm->Init());
         auto& thing_manager = iot::ThingManager::GetInstance();
         thing_manager.AddThing(iot::CreateThing("Speaker"));
         thing_manager.AddThing(iot::CreateThing("Backlight"));
         // thing_manager.AddThing(iot::CreateThing("Chassis"));
+        iot::Thing *bot = iot::CreateThing("DBot");
+        ESP_ERROR_CHECK(bot->AddComm(simple_comm));
+        thing_manager.AddThing(bot);
     }
 
 public:

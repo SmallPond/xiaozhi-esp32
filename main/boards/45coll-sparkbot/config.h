@@ -2,6 +2,7 @@
 #define _BOARD_CONFIG_H_
 
 #include <driver/gpio.h>
+#include <driver/uart.h>
 
 #define AUDIO_INPUT_SAMPLE_RATE  16000
 #define AUDIO_OUTPUT_SAMPLE_RATE 16000
@@ -42,5 +43,9 @@
 #define DISPLAY_BACKLIGHT_PIN GPIO_NUM_44
 #define DISPLAY_BACKLIGHT_OUTPUT_INVERT true
 
+#define UART_COMM_TXD           GPIO_NUM_38
+#define UART_COMM_RXD           GPIO_NUM_48
+#define UART_COMM_PORT_NUM      UART_NUM_1
+#define UART_COMM_BAUD_RATE     (115200)
 
 #endif // _BOARD_CONFIG_H_
