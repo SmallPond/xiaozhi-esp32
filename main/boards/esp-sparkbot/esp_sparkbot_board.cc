@@ -16,6 +16,8 @@
 #include "communication/simple_comm.h"
 #include "communication/uart_comm.h"
 #include "chassis.h"
+#include "dbot.h"
+#include "communication/udp_comm.h"
 #define TAG "esp_sparkbot"
 
 LV_FONT_DECLARE(font_puhui_20_4);
@@ -131,10 +133,18 @@ private:
                             UART_ECHO_TXD, UART_ECHO_RXD, ECHO_UART_BAUD_RATE);
 
         ESP_ERROR_CHECK(comm->Init());
+        /** 
+         * WiFi init is performed after new ​board(),
+         * and the init of udp_comm is delayed until 
+         * the actual message transmission.
+         */
+        iot::SimpleComm *udp_comm = new iot::UDPComm("255.255.255.255");
+
         auto& thing_manager = iot::ThingManager::GetInstance();
         thing_manager.AddThing(iot::CreateThing("Speaker"));
         thing_manager.AddThing(iot::CreateThing("Backlight"));
         thing_manager.AddThing(new iot::Chassis(comm));
+        thing_manager.AddThing(new iot::DBot(udp_comm));
     }
 
 public:
