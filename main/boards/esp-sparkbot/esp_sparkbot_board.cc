@@ -15,8 +15,10 @@
 
 #include "communication/simple_comm.h"
 #include "communication/uart_comm.h"
+#include "communication/mqtt_comm.h"
 #include "chassis.h"
 #include "dbot.h"
+#include "xknob.h"
 #include "communication/udp_comm.h"
 #define TAG "esp_sparkbot"
 
@@ -139,12 +141,13 @@ private:
          * the actual message transmission.
          */
         iot::SimpleComm *udp_comm = new iot::UDPComm("255.255.255.255");
-
+        iot::SimpleComm *mqtt_comm = new iot::MqttComm("mqtt://dingmos.com", "esp-bot");
         auto& thing_manager = iot::ThingManager::GetInstance();
         thing_manager.AddThing(iot::CreateThing("Speaker"));
         thing_manager.AddThing(iot::CreateThing("Backlight"));
-        thing_manager.AddThing(new iot::Chassis(comm));
+        // thing_manager.AddThing(new iot::Chassis(comm));
         thing_manager.AddThing(new iot::DBot(udp_comm));
+        thing_manager.AddThing(new iot::XKnob(mqtt_comm));
     }
 
 public:
