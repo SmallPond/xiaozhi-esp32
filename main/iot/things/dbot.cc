@@ -4,30 +4,30 @@
 
 namespace iot {
 
-DBot::DBot(SimpleComm *comm) : Thing("DBot", "多功能两轮平衡车(机器人)，可以精准控制转向的角度和前后移动的距离"), 
+DBot::DBot(SimpleComm *comm) : Thing("DBot", "多功能平衡车(机器人)，可以精准控制转向的角度和前后移动的距离"), 
                comm_(comm) {
     methods_.AddMethod("Move", "向前后移动", 
         ParameterList({
-            Parameter("distance", "移动的距离，单位为厘米", kValueTypeNumber, true),
+            Parameter("distance", "移动的距离，单位为厘米，向后为负数，向前为正数", kValueTypeNumber, true),
         }),
         [this](const ParameterList& parameters) {
             int32_t distance = static_cast<int32_t>(parameters["distance"].number());
             std::string json_str = "{";
-            json_str += "\"action\":\"Move\",";
-            json_str += "\"value\":\"" + std::to_string(distance) + "\",";
+            json_str += "\"action\":\"MOVE\",";
+            json_str += "\"target\":" + std::to_string(distance);
             json_str += "}";
             SendCommand(json_str);
         });
 
     methods_.AddMethod("Spin", "旋转", 
         ParameterList({
-            Parameter("angle", "旋转的角度", kValueTypeNumber, true),
+            Parameter("angle", "旋转的角度，左转为负数，右转为正数", kValueTypeNumber, true),
         }),
         [this](const ParameterList& parameters) {
             int32_t angle = static_cast<int32_t>(parameters["angle"].number());
             std::string json_str = "{";
-            json_str += "\"action\":\" Spin\",";
-            json_str += "\"value\":\"" + std::to_string(angle) + "\",";
+            json_str += "\"action\":\"SPIN\",";
+            json_str += "\"target\":" + std::to_string(angle);
             json_str += "}";
             SendCommand(json_str);
         });
