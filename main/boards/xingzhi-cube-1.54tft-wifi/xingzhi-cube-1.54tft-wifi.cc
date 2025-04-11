@@ -17,6 +17,9 @@
 
 #include <driver/rtc_io.h>
 #include <esp_sleep.h>
+#include "iot/communication/udp_comm.h"
+#include "iot/thing.h"
+#include "iot/things/dbot.h"
 
 #define TAG "XINGZHI_CUBE_1_54TFT_WIFI"
 
@@ -168,6 +171,9 @@ private:
         thing_manager.AddThing(iot::CreateThing("Speaker"));
         thing_manager.AddThing(iot::CreateThing("Screen"));
         thing_manager.AddThing(iot::CreateThing("Battery"));
+
+        iot::SimpleComm *udp_comm = new iot::UDPComm("255.255.255.255");
+        thing_manager.AddThing(new iot::DBot(udp_comm));
     }
 
 public:
