@@ -4,7 +4,7 @@
 
 namespace iot {
 
-XKnob::XKnob(SimpleComm *comm) : Thing("XKnob", "智能家居控制旋钮，可以控制小米智能家居：屏幕挂灯，小米电视，除湿机等"), 
+XKnob::XKnob(SimpleComm *comm) : Thing("XKnob", "智能家居控制旋钮，可以控制小米智能家居：屏幕挂灯，小米电视，除湿机，风扇，空气净化器等"), 
                comm_(comm) {
     methods_.AddMethod("TurnOnDevice", "待打开的智能设备", 
         ParameterList({
