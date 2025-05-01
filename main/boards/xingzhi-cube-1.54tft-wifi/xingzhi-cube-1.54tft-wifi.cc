@@ -17,9 +17,12 @@
 
 #include <driver/rtc_io.h>
 #include <esp_sleep.h>
+
+#include "iot/communication/mqtt_comm.h"
 #include "iot/communication/udp_comm.h"
 #include "iot/thing.h"
 #include "iot/things/dbot.h"
+#include "iot/things/xknob.h"
 
 #define TAG "XINGZHI_CUBE_1_54TFT_WIFI"
 
@@ -173,6 +176,7 @@ private:
         thing_manager.AddThing(iot::CreateThing("Battery"));
 
         iot::SimpleComm *udp_comm = new iot::UDPComm("255.255.255.255");
+        iot::SimpleComm *mqtt_comm = new iot::MqttComm("mqtt://dingmos.com", "esp-bot");
         thing_manager.AddThing(new iot::DBot(udp_comm));
     }
 
