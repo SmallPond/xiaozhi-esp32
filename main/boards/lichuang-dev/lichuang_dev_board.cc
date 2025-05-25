@@ -13,6 +13,10 @@
 #include <driver/spi_common.h>
 #include <wifi_station.h>
 
+#include "iot/communication/udp_comm.h"
+#include "iot/thing.h"
+#include "iot/things/dbot.h"
+
 #define TAG "LichuangDevBoard"
 
 LV_FONT_DECLARE(font_puhui_20_4);
@@ -135,6 +139,8 @@ private:
         auto& thing_manager = iot::ThingManager::GetInstance();
         thing_manager.AddThing(iot::CreateThing("Speaker"));
         thing_manager.AddThing(iot::CreateThing("Screen"));
+        iot::SimpleComm *udp_comm = new iot::UDPComm("255.255.255.255");
+        thing_manager.AddThing(new iot::DBot(udp_comm));
     }
 
 public:

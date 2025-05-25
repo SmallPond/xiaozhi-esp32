@@ -15,6 +15,10 @@
 #include <esp_lcd_panel_ops.h>
 #include <esp_lcd_panel_vendor.h>
 
+#include "iot/communication/udp_comm.h"
+#include "iot/thing.h"
+#include "iot/things/dbot.h"
+
 #define TAG "CompactWifiBoard"
 
 LV_FONT_DECLARE(font_puhui_14_1);
@@ -146,6 +150,9 @@ private:
         auto& thing_manager = iot::ThingManager::GetInstance();
         thing_manager.AddThing(iot::CreateThing("Speaker"));
         thing_manager.AddThing(iot::CreateThing("Lamp"));
+
+        iot::SimpleComm *udp_comm = new iot::UDPComm("255.255.255.255");
+        thing_manager.AddThing(new iot::DBot(udp_comm));
     }
 
 public:
